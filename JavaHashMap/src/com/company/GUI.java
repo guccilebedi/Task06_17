@@ -4,14 +4,17 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class GUI {
+    private JTextArea textArea1;
     private JPanel panel1;
     private JTextField textField1;
-    private JTextArea textArea1;
     private JButton openFileButton;
     private JButton findProperNamesButton;
+
 
     public GUI() {
         final String[] fileName = new String[1];
@@ -27,14 +30,11 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    HashMap simpleHashMap = SimpleHashMapUtils.findProperNames(FileUtils.read(fileName[0]));
-                    String txt = null;
-                    for (int i = 0; i < simpleHashMap.size(); i++) {
-                        if (txt == null) {
-                            txt = String.valueOf(simpleHashMap.get(i));
-                        } else {
-                            txt += "\n" + simpleHashMap.get(i);
-                        }
+                    HashMap hashMap = HashMapUtils.findProperNames(FileUtils.read(fileName[0]));
+                    List lst = new ArrayList(hashMap.entrySet());
+                    String txt = "";
+                    for (int i = 0; i < lst.size(); i++) {
+                        txt += lst.get(i) + "\n";
                     }
                     textArea1.setText(txt);
                 } catch (FileNotFoundException ex) {
