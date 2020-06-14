@@ -10,12 +10,12 @@ public class CustomHashMap {
     public CustomHashMap() {
     }
 
-    private int hash(Object key) {
-        int hash = key.hashCode() % (hashTable.length - 1);
-        while (hash < 0) {
-            hash += hashTable.length;
+    private int getIndex(Object key) {
+        int index = key.hashCode() % (hashTable.length - 1);
+        while (index < 0) {
+            index += hashTable.length;
         }
-        return hash;
+        return index;
     }
 
     private void threshold() {
@@ -37,16 +37,16 @@ public class CustomHashMap {
 
     public void put(Object key, Object value) {
         threshold();
-        int hash = hash(key);
-        if (hashTable[hash] == null) {
-            hashTable[hash] = new HashEntry(key, value);
+        int index = getIndex(key);
+        if (hashTable[index] == null) {
+            hashTable[index] = new HashEntry(key, value);
             size++;
         } else {
-            delete(key);
-            if (hashTable[hash] == null) {
+            remove(key);
+            if (hashTable[index] == null) {
                 put(key, value);
             } else {
-                HashEntry temp = hashTable[hash];
+                HashEntry temp = hashTable[index];
                 while (temp.getNext() != null) {
                     temp = temp.getNext();
                 }
@@ -55,21 +55,21 @@ public class CustomHashMap {
         }
     }
 
-    public void delete(Object key) {
-        int hash = hash(key);
-        if (hashTable[hash] == null) {
+    public void remove(Object key) {
+        int index = getIndex(key);
+        if (hashTable[index] == null) {
             return;
         } else {
-            if (hashTable[hash].getNext() == null) {
-                if (hashTable[hash].getKey().equals(key)) {
-                    hashTable[hash] = null;
+            if (hashTable[index].getNext() == null) {
+                if (hashTable[index].getKey().equals(key)) {
+                    hashTable[index] = null;
                     size--;
                 }
             } else {
-                if (hashTable[hash].getKey().equals(key)) {
-                    hashTable[hash] = hashTable[hash].getNext();
+                if (hashTable[index].getKey().equals(key)) {
+                    hashTable[index] = hashTable[index].getNext();
                 } else {
-                    HashEntry temp = hashTable[hash];
+                    HashEntry temp = hashTable[index];
                     while (temp.getNext() != null) {
                         if (temp.getNext().getKey().equals(key)) {
                             temp.setNext(temp.getNext().getNext());
@@ -82,12 +82,12 @@ public class CustomHashMap {
     }
 
     public Object get(Object key) {
-        int hash = hash(key);
-        if (hash < hashTable.length && hashTable[hash] != null) {
-            if (hashTable[hash].getNext() == null && hashTable[hash].getKey().equals(key)) {
-                return hashTable[hash].getValue();
+        int index = getIndex(key);
+        if (index < hashTable.length && hashTable[index] != null) {
+            if (hashTable[index].getNext() == null && hashTable[index].getKey().equals(key)) {
+                return hashTable[index].getValue();
             } else {
-                HashEntry temp = hashTable[hash];
+                HashEntry temp = hashTable[index];
                 while (temp.getNext() != null) {
                     if (temp.getKey().equals(key)) {
                         return temp.getValue();
