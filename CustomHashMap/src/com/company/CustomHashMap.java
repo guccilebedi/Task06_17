@@ -25,11 +25,10 @@ public class CustomHashMap {
             size = 0;
             for (HashEntry temp : oldHashTable) {
                 if (temp != null) {
-                    while (temp.getNext() != null) {
+                    while (temp != null) {
                         put(temp.getKey(), temp.getValue());
                         temp = temp.getNext();
                     }
-                    put(temp.getKey(), temp.getValue());
                 }
             }
         }
@@ -70,11 +69,10 @@ public class CustomHashMap {
                     hashTable[index] = hashTable[index].getNext();
                 } else {
                     HashEntry temp = hashTable[index];
-                    while (temp.getNext() != null) {
+                    while (temp != null) {
                         if (temp.getNext().getKey().equals(key)) {
                             temp.setNext(temp.getNext().getNext());
                         }
-                        temp = temp.getNext();
                     }
                 }
             }
@@ -88,14 +86,11 @@ public class CustomHashMap {
                 return hashTable[index].getValue();
             } else {
                 HashEntry temp = hashTable[index];
-                while (temp.getNext() != null) {
+                while (temp != null) {
                     if (temp.getKey().equals(key)) {
                         return temp.getValue();
                     }
                     temp = temp.getNext();
-                }
-                if (temp.getKey().equals(key)) {
-                    return temp.getValue();
                 }
             }
         }
